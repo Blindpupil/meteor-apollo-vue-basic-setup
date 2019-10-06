@@ -1,0 +1,11 @@
+type Resolution {
+    # the _id syntax is taken from Mongo
+    # the bang ! means it's a required field
+    _id: String!
+    name: String!
+    # there's no date types in GraphQL. We'll setup createdAt later
+}
+
+type Mutation {
+    createResolution(name: String!): Resolution
+}
