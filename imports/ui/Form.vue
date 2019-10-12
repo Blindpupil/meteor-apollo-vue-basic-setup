@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <input type="text" v-model="name">
-        <button @click="submit"> Submit</button>
-    </div>
+	<div>
+		<input type="text" v-model="name">
+		<button @click="submit"> Submit</button>
+	</div>
 </template>
 
 <script>
@@ -16,9 +16,6 @@
     }`
 
   export default {
-    props: {
-      resolutions: Object,
-    },
     name: 'Form',
     data: () => ({
       name: '',
@@ -32,8 +29,8 @@
             variables: {
               name: this.name,
             },
+            refetchQueries: ['resolutions'],
           })
-          this.resolutions.refetch()
         } catch(e) {
           console.log(e)
         }
