@@ -5,11 +5,14 @@ export default {
     resolutions: () => Resolutions.find({}).fetch(),
   },
   Mutation: {
-    createResolution(obj, { name }) {
+    createResolution(parent, { name }) {
       const resolutionId = Resolutions.insert({
         name,
       })
       return Resolutions.findOne(resolutionId)
+    },
+    deleteResolution(parent, { id }) {
+      Resolutions.remove(id)
     },
   },
 }

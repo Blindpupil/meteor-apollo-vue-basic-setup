@@ -8,7 +8,7 @@
 <script>
   import gql from 'graphql-tag'
 
-  const mutation = gql`
+  const create = gql`
     mutation ($name: String!) {
       createResolution(name: $name) {
         _id
@@ -28,7 +28,7 @@
         event.preventDefault()
         try {
           await this.$apollo.mutate({
-            mutation,
+            mutation: create,
             variables: {
               name: this.name,
             },

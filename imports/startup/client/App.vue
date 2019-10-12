@@ -8,6 +8,7 @@
         <ul>
             <li v-for="res in resolutions" :key="res._id">
                 {{ res.name }}
+                <button @click="destroy(res._id)">Delete</button>
             </li>
         </ul>
     </div>
@@ -24,6 +25,12 @@
     }
   }`
 
+  const destroy = gql`mutation ($id: String!) {
+    deleteResolution(id: $id) {
+      _id
+    }
+  }`
+
   export default {
     name: 'App',
     components: { Form },
@@ -33,8 +40,18 @@
       resolutions,
     },
     methods: {
-      doit() {
-        console.log(this.$apollo)
+      async destroy(id) {
+        try {
+          await this.$apollo.mutate({
+            mutation: destroy,
+            variables: {
+              id,
+            },
+          })
+          this.$apollo.queries.resolutions.refetch()
+        } catch(e) {
+          console.log(e)
+        }
       },
     },
   }
