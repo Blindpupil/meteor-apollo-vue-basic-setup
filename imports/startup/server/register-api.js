@@ -5,16 +5,18 @@ import merge from 'lodash/merge'
 
 import ResolutionSchema from '../../api/resolutions/Resolution.graphql'
 import ResolutionResolvers from '../../api/resolutions/resolvers'
+import UsersSchema from '../../api/users/User.graphql'
+import UserResolver from '../../api/users/resolvers'
 
 const testSchema = `
 type Query {
-  hi: String,
+  hi: String
   resolutions: [Resolution]
+  user: User
 }
 `
-
-
-const typeDefs = [testSchema, ResolutionSchema]
+// ...
+const typeDefs = [testSchema, ResolutionSchema, UsersSchema]
 
 const hiResolver = {
   Query: {
@@ -23,7 +25,7 @@ const hiResolver = {
 }
 
 const resolvers = merge(
-  hiResolver, ResolutionResolvers,
+  hiResolver, ResolutionResolvers, UserResolver,
 )
 
 const server = new ApolloServer({

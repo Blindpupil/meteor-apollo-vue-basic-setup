@@ -2,24 +2,26 @@
 	<div>
 		<h1>{{ hi }}</h1>
 		<p>{{ userInfo }}</p>
-		<button @click="logout">Logout</button>
 
-		<h2>Add resolution</h2>
-		<Form></Form>
+		<div v-if="user">
+			<button @click="logout">Logout</button>
+			<h2>Add resolution</h2>
+			<Form></Form>
 
-		<h2>Resolutions</h2>
-		<ul>
-			<li v-for="res in resolutions" :key="res._id">
-				{{ res.name }}
-				<button @click="destroy(res._id)">Delete</button>
-			</li>
-		</ul>
+			<h2>Resolutions</h2>
+			<ul>
+				<li v-for="res in resolutions" :key="res._id">
+					{{ res.name }}
+					<button @click="destroy(res._id)">Delete</button>
+				</li>
+			</ul>
+		</div>
 
-		<Login></Login>
-
-		<h1>OR</h1>
-
-		<Register></Register>
+		<div v-if="!user">
+			<Login></Login>
+			<h3>OR</h3>
+			<Register></Register>
+		</div>
 	</div>
 </template>
 
@@ -28,13 +30,6 @@
   import Form from '../../ui/Form.vue'
   import Login from '../../ui/Login.vue'
   import Register from '../../ui/Register'
-
-  const resolutions = gql`query resolutions{
-    resolutions {
-      _id
-      name
-    }
-  }`
 
   const destroy = gql`mutation ($id: String!) {
     deleteResolution(id: $id) {
@@ -51,12 +46,14 @@
     },
     data() {
       return {
-        userId: Meteor.userId(),
+        hi: '',
+        resolutions: [],
+        user: {},
       }
     },
     computed: {
       userInfo() {
-        userId = Meteor.userId()
+        const userId = this.user ? this.user._id : null
         if (userId) {
           return `You're logged in as ${ userId }`
         }
@@ -65,7 +62,18 @@
     },
     apollo: {
       hi: gql`query { hi }`,
-      resolutions,
+      resolutions: gql`query {
+				resolutions {
+					_id
+					name
+				}
+			}`,
+      user: gql`query {
+				user {
+					_id
+					email
+				}
+			}`,
     },
     methods: {
       async destroy(id) {
@@ -73,7 +81,7 @@
           await this.$apollo.mutate({
             mutation: destroy,
             variables: { id },
-            refetchQueries: ['resolutions'],
+            refetchQueries: ['resolutions', 'user'],
           })
         } catch(e) {
           console.log(e)
