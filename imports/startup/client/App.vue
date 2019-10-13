@@ -53,7 +53,7 @@
     },
     computed: {
       userInfo() {
-        const userId = this.user ? this.user._id : null
+        const userId = this.user ? this.user.email : null
         if (userId) {
           return `You're logged in as ${ userId }`
         }

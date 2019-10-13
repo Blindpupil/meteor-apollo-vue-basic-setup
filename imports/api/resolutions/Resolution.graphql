@@ -10,3 +10,7 @@ type Mutation {
     createResolution(name: String!): Resolution,
     deleteResolution(id: String!): Resolution
 }
+
+extend type Query {
+    resolutions: [Resolution]
+}

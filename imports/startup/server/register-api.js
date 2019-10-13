@@ -8,21 +8,19 @@ import ResolutionResolvers from '../../api/resolutions/resolvers'
 import UsersSchema from '../../api/users/User.graphql'
 import UserResolver from '../../api/users/resolvers'
 
-const testSchema = `
+const hiSchema = `
 type Query {
   hi: String
-  resolutions: [Resolution]
-  user: User
 }
 `
-// ...
-const typeDefs = [testSchema, ResolutionSchema, UsersSchema]
 
 const hiResolver = {
   Query: {
     hi: () => 'Hello World',
   },
 }
+
+const typeDefs = [hiSchema, ResolutionSchema, UsersSchema]
 
 const resolvers = merge(
   hiResolver, ResolutionResolvers, UserResolver,
