@@ -7,25 +7,26 @@ import ResolutionSchema from '../../api/resolutions/Resolution.graphql'
 import ResolutionResolvers from '../../api/resolutions/resolvers'
 import UsersSchema from '../../api/users/User.graphql'
 import UserResolver from '../../api/users/resolvers'
+import GoalSchema from '../../api/goals/Goal.graphql'
+import GoalResolvers from '../../api/goals/resolvers'
 
 const hiSchema = `
 type Query {
   hi: String
 }
 `
-
 const hiResolver = {
   Query: {
     hi: () => 'Hello World',
   },
 }
 
-const typeDefs = [hiSchema, ResolutionSchema, UsersSchema]
-
+const typeDefs = [hiSchema, ResolutionSchema, UsersSchema, GoalSchema]
 const resolvers = merge(
-  hiResolver, ResolutionResolvers, UserResolver,
+  hiResolver, ResolutionResolvers, UserResolver, GoalResolvers,
 )
 
+//
 const server = new ApolloServer({
   typeDefs,
   resolvers,

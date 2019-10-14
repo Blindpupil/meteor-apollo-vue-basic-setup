@@ -4,6 +4,8 @@ type Resolution {
     _id: String!
     name: String!
     # there's no date types in GraphQL. We'll setup createdAt later
+
+    goals: [Goal]
 }
 
 type Mutation {
@@ -13,4 +15,5 @@ type Mutation {
 
 extend type Query {
     resolutions: [Resolution]
+    goals: [Goal]
 }

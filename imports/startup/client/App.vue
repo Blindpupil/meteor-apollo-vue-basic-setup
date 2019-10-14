@@ -5,21 +5,23 @@
 
 		<div v-if="user">
 			<button @click="logout">Logout</button>
-			<h2>Add resolution</h2>
-			<Form></Form>
 
-			<h2>Resolutions</h2>
+			<h2>Your Resolutions</h2>
 			<ul>
 				<li v-for="res in resolutions" :key="res._id">
 					{{ res.name }}
 					<button @click="destroy(res._id)">Delete</button>
+					<GoalForm :resolution-id="res._id"></GoalForm>
 				</li>
 			</ul>
+
+			<h3>Add new resolution</h3>
+			<Form></Form>
 		</div>
 
 		<div v-if="!user">
 			<Login></Login>
-			<h3>OR</h3>
+			<h2>OR</h2>
 			<Register></Register>
 		</div>
 	</div>
@@ -30,6 +32,7 @@
   import Form from '../../ui/Form.vue'
   import Login from '../../ui/Login.vue'
   import Register from '../../ui/Register'
+  import GoalForm from '../../ui/GoalForm.vue'
 
   const destroy = gql`mutation ($id: String!) {
     deleteResolution(id: $id) {
@@ -43,6 +46,7 @@
       Register,
       Form,
       Login,
+      GoalForm,
     },
     data() {
       return {
@@ -66,6 +70,10 @@
 				resolutions {
 					_id
 					name
+				}
+				goals {
+				  name
+				  completed
 				}
 			}`,
       user: gql`query {
