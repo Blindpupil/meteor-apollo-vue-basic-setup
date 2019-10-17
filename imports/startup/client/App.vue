@@ -9,9 +9,20 @@
 			<h2>Your Resolutions</h2>
 			<ul>
 				<li v-for="res in resolutions" :key="res._id">
-					{{ res.name }}
-					<button @click="destroy(res._id)">Delete</button>
-					<GoalForm :resolution-id="res._id"></GoalForm>
+					<div>
+						<span>{{ res.name }}</span>
+						<button @click="destroyRes(res._id)">Delete</button>
+					</div>
+					<div class="pad1">
+						<h4 class="pad1 ma0">Goals</h4>
+						<ul>
+							<li v-for="goal in res.goals">
+								{{ goal.name }}
+								<button @click="destroyGoal(goal._id)">Delete Goal</button>
+							</li>
+						</ul>
+						<GoalForm :resolution-id="res._id"></GoalForm>
+					</div>
 				</li>
 			</ul>
 
@@ -34,11 +45,25 @@
   import Register from '../../ui/Register'
   import GoalForm from '../../ui/GoalForm.vue'
 
-  const destroy = gql`mutation ($id: String!) {
-    deleteResolution(id: $id) {
-      _id
-    }
+  const deleteResolution = gql`mutation ($id: String!) {
+    deleteResolution(id: $id) { _id }
   }`
+
+  const deleteGoal = gql`mutation ($id: String!) {
+		deleteGoal(id: $id) { _id }
+	}`
+
+  const resolutions = gql`query resolutions {
+		resolutions {
+			_id
+			name
+			goals {
+				_id
+				name
+				completed
+			}
+		}
+	}`
 
   export default {
     name: 'App',
@@ -66,16 +91,7 @@
     },
     apollo: {
       hi: gql`query { hi }`,
-      resolutions: gql`query {
-				resolutions {
-					_id
-					name
-				}
-				goals {
-				  name
-				  completed
-				}
-			}`,
+      resolutions,
       user: gql`query {
 				user {
 					_id
@@ -84,12 +100,23 @@
 			}`,
     },
     methods: {
-      async destroy(id) {
+      async destroyRes(id) {
         try {
           await this.$apollo.mutate({
-            mutation: destroy,
+            mutation: deleteResolution,
             variables: { id },
-            refetchQueries: ['resolutions', 'user'],
+            refetchQueries: ['resolutions'],
+          })
+        } catch(e) {
+          console.log(e)
+        }
+      },
+      async destroyGoal(id) {
+        try {
+          await this.$apollo.mutate({
+            mutation: deleteGoal,
+            variables: { id },
+            refetchQueries: ['resolutions'],
           })
         } catch(e) {
           console.log(e)
@@ -103,6 +130,13 @@
   }
 </script>
 
-<style scoped>
+<style>
+	.pad1 {
+		padding: 8px;
+	}
+
+	.ma0 {
+		margin: 0;
+	}
 
 </style>

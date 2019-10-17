@@ -33,7 +33,7 @@
               name: this.name,
               resolutionId: this.resolutionId,
             },
-            // refetchQueries: ['resolutions'],
+            refetchQueries: ['resolutions'],
           })
         } catch(e) {
           console.log(e)
