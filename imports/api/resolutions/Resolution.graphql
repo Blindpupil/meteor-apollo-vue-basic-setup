@@ -6,6 +6,7 @@ type Resolution {
     # there's no date types in GraphQL. We'll setup createdAt later
 
     goals: [Goal]
+    completed: Boolean
 }
 
 type Mutation {

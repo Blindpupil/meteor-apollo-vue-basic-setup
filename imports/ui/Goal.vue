@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<input type="checkbox" v-model="goal.completed" @click="toggleGoal(goal._id)">
-		{{ goal.name }}
+
+		<span :class="goal.completed ? 'completed' : ''">
+				{{ goal.name }}
+		</span>
+
 		<button @click="destroyGoal(goal._id)">Delete Goal</button>
 	</div>
 </template>
@@ -51,3 +55,9 @@
     },
   }
 </script>
+
+<style scoped>
+	.completed {
+		text-decoration: line-through;
+	}
+</style>

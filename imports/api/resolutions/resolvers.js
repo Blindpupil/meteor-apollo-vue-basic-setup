@@ -10,7 +10,15 @@ export default {
   },
 
   Resolution: {
-    goals: resolution => Goals.find({ resolutionId: resolution._id }).fetch()
+    goals: resolution => Goals.find({ resolutionId: resolution._id }).fetch(),
+    completed: resolution => {
+      const goals = Goals.find({ resolutionId: resolution._id }).fetch()
+
+      if (goals.length === 0) return false
+
+      const completedGoals = goals.filter(goal => goal.completed).length
+      return goals.length === completedGoals
+    },
   },
 
   Mutation: {

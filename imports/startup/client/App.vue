@@ -10,7 +10,9 @@
 			<ul>
 				<li v-for="res in resolutions" :key="res._id">
 					<div>
-						<span>{{ res.name }}</span>
+						<span :class="res.completed ? 'completed' : ''">
+							{{ res.name }}
+						</span>
 						<button @click="destroyRes(res._id)">Delete</button>
 					</div>
 					<div class="pad1">
@@ -51,6 +53,7 @@
 		resolutions {
 			_id
 			name
+			completed
 			goals {
 				_id
 				name
@@ -123,4 +126,7 @@
 		margin: 0;
 	}
 
+	.completed {
+		text-decoration: line-through;
+	}
 </style>
