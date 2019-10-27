@@ -35,6 +35,7 @@
             },
             refetchQueries: ['resolutions'],
           })
+          this.name = ''
         } catch(e) {
           console.log(e)
         }

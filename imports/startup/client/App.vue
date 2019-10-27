@@ -16,10 +16,7 @@
 					<div class="pad1">
 						<h4 class="pad1 ma0">Goals</h4>
 						<ul>
-							<li v-for="goal in res.goals">
-								{{ goal.name }}
-								<button @click="destroyGoal(goal._id)">Delete Goal</button>
-							</li>
+							<Goal v-for="goal in res.goals" :goal="goal" :key="goal._id"></Goal>
 						</ul>
 						<GoalForm :resolution-id="res._id"></GoalForm>
 					</div>
@@ -40,18 +37,15 @@
 
 <script>
   import gql from 'graphql-tag'
-  import Form from '../../ui/Form.vue'
-  import Login from '../../ui/Login.vue'
+  import Form from '../../ui/Form'
+  import Login from '../../ui/Login'
   import Register from '../../ui/Register'
-  import GoalForm from '../../ui/GoalForm.vue'
+  import Goal from '../../ui/Goal'
+  import GoalForm from '../../ui/GoalForm'
 
   const deleteResolution = gql`mutation ($id: String!) {
     deleteResolution(id: $id) { _id }
   }`
-
-  const deleteGoal = gql`mutation ($id: String!) {
-		deleteGoal(id: $id) { _id }
-	}`
 
   const resolutions = gql`query resolutions {
 		resolutions {
@@ -71,6 +65,7 @@
       Register,
       Form,
       Login,
+      Goal,
       GoalForm,
     },
     data() {
@@ -104,17 +99,6 @@
         try {
           await this.$apollo.mutate({
             mutation: deleteResolution,
-            variables: { id },
-            refetchQueries: ['resolutions'],
-          })
-        } catch(e) {
-          console.log(e)
-        }
-      },
-      async destroyGoal(id) {
-        try {
-          await this.$apollo.mutate({
-            mutation: deleteGoal,
             variables: { id },
             refetchQueries: ['resolutions'],
           })

@@ -26,7 +26,7 @@ const resolvers = merge(
   hiResolver, ResolutionResolvers, UserResolver, GoalResolvers,
 )
 
-//
+// ...
 const server = new ApolloServer({
   typeDefs,
   resolvers,

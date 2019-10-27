@@ -13,5 +13,14 @@ export default {
     deleteGoal(parent, { id }) {
       Goals.remove(id)
     },
+    toggleGoal(parent, { id }) {
+      const goal = Goals.findOne(id)
+      Goals.update(id, {
+        $set: {
+          completed: !goal.completed,
+        },
+      })
+      return goal
+    },
   },
 }
