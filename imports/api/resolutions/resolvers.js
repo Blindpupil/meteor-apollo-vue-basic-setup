@@ -23,6 +23,7 @@ export default {
 
   Mutation: {
     createResolution(parent, { name }, { user }) {
+      if (!user) throw new Error('Unauthorized')
       const resolutionId = Resolutions.insert({
         name,
         userId: user._id,
